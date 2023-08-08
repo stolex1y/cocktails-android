@@ -1,6 +1,7 @@
 package ru.stolexiy.cocktails.ui.cocktail.edit
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -20,11 +21,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,10 +40,13 @@ import kotlinx.coroutines.flow.collectLatest
 import ru.stolexiy.cocktails.R
 import ru.stolexiy.cocktails.ui.cocktail.CocktailViewModel
 import ru.stolexiy.cocktails.ui.cocktail.edit.model.Cocktail
+import ru.stolexiy.cocktails.ui.cocktail.edit.model.Ingredient
 import ru.stolexiy.cocktails.ui.cocktail.edit.model.toCocktail
 import ru.stolexiy.cocktails.ui.components.AddButton
+import ru.stolexiy.cocktails.ui.components.CocktailDialog
 import ru.stolexiy.cocktails.ui.components.CocktailsOutlinedTextField
 import ru.stolexiy.cocktails.ui.components.CocktailsOutlinedTextFieldNullable
+import ru.stolexiy.cocktails.ui.components.DialogState
 import ru.stolexiy.cocktails.ui.components.IngredientChip
 import ru.stolexiy.cocktails.ui.components.Placeholder
 import ru.stolexiy.cocktails.ui.components.TextButton
@@ -107,8 +114,11 @@ fun EditCocktailForm(
     ) {
         editingCocktail ?: Cocktail()
     }
+    val addIngredientDialogState = DialogState.rememberDialogState()
+    val cocktailValidity by cocktail.isValidAsState
     Column(
         modifier = Modifier
+            .background(CocktailsTheme.colors.background)
             .padding(
                 top = 40.dp,
                 start = 16.dp,
@@ -148,7 +158,7 @@ fun EditCocktailForm(
             CocktailIngredients(
                 onRemoveIngredient = { cocktail.removeIngredient(it) },
                 ingredientsProperty = cocktail.ingredients,
-                onAddIngredient = { TODO() }
+                onAddIngredient = { addIngredientDialogState.open() }
             )
             CocktailsOutlinedTextFieldNullable(
                 modifier = Modifier.fillMaxWidth(),
@@ -165,6 +175,7 @@ fun EditCocktailForm(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             TextButton(
+                enabled = cocktailValidity,
                 onClick = {
                     if (cocktail.isValid)
                         onSaveCocktail(cocktail)
@@ -179,6 +190,12 @@ fun EditCocktailForm(
             )
         }
     }
+    AddIngredientDialog(
+        dialogState = addIngredientDialogState,
+        onAdd = {
+            cocktail.addIngredient(it)
+        }
+    )
 }
 
 @Composable
@@ -246,6 +263,67 @@ private fun CocktailIngredients(
 }
 
 @Composable
+private fun AddIngredientDialog(
+    dialogState: DialogState,
+    onAdd: (String) -> Unit,
+) {
+    var ingredient: Ingredient by rememberSaveable(
+        saver = Ingredient.saver
+    ) {
+        mutableStateOf(Ingredient())
+    }
+    val validationResult by ingredient.isValidAsState
+    CocktailDialog(
+        modifier = Modifier
+            .fillMaxWidth(),
+        dialogState = dialogState
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.add_ingredient),
+                style = MaterialTheme.typography.headlineLarge
+            )
+            CocktailsOutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                validatedProperty = ingredient.title,
+                label = R.string.ingredient,
+                required = true
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                TextButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = validationResult,
+                    onClick = {
+                        onAdd(ingredient.title.value)
+                        ingredient = Ingredient()
+                        dialogState.close()
+                    },
+                    text = R.string.add
+                )
+                TextButtonLight(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        dialogState.close()
+                        ingredient = Ingredient()
+                    },
+                    text = R.string.cancel
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun CocktailViewModel.editingCocktailAsState(): State<Cocktail?> =
     produceState<Cocktail?>(
         initialValue = null
@@ -260,6 +338,17 @@ private fun CocktailViewModel.editingCocktailAsState(): State<Cocktail?> =
 private fun reloadData(viewModel: CocktailViewModel) {
     LaunchedEffect(viewModel) {
         viewModel.reloadData()
+    }
+}
+
+@Composable
+@Preview(showBackground = true, showSystemUi = true)
+private fun AddIngredientDialogPreview() {
+    CocktailsTheme {
+        AddIngredientDialog(
+            dialogState = DialogState.rememberDialogState().apply { open() },
+            onAdd = {}
+        )
     }
 }
 

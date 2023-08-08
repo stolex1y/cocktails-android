@@ -12,4 +12,17 @@
     <string name="cocktail_deleting">Удаление коктейля</string>
     <string name="recipe">Рецепт</string>
     <string name="edit">Изменить</string>
+    <string name="required_field">Обязательное поле</string>
+    <string name="add_title">Введите название</string>
+    <string name="add_ingredients">Добавьте хотя бы один ингредиент</string>
+    <string name="optional_field">Необязательное поле</string>
+    <string name="title">Название</string>
+    <string name="description">Описание</string>
+    <string name="ingredients">Ингредиенты</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отменить</string>
+    <string name="remove_ingredient">Удалить ингредиент</string>
+    <string name="add_ingredient">Добавить ингредиент</string>
+    <string name="add">Добавить</string>
+    <string name="ingredient">Ингредиент</string>
 </resources>

@@ -18,9 +18,11 @@ import ru.stolexiy.cocktails.ui.theme.CocktailsTheme
 fun TextButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    @StringRes text: Int
+    @StringRes text: Int,
+    enabled: Boolean = true,
 ) {
     Button(
+        enabled = enabled,
         modifier = modifier,
         shape = MaterialTheme.shapes.extraLarge,
         colors = ButtonDefaults.buttonColors(
