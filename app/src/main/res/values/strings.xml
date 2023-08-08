@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">Cocktails</string>
+    <string name="app_name">Cocktail Bar</string>
+    <string name="add_cocktail">Добавить коктейль</string>
+    <string name="internal_error">Произошла внутренняя ошибка приложения…</string>
+    <string name="background_work">Фоновая работа</string>
+    <string name="cocktail_image">Изображение коктейля</string>
+    <string name="my_cocktails">Мои коктейли</string>
+    <string name="add_first_cocktail_hint">Добавьте свой первый коктейль здесь</string>
+    <string name="arrow_down">Стрелка вниз</string>
+    <string name="cocktail_adding">Добавление коктейля</string>
+    <string name="cocktail_updating">Обновление коктейля</string>
+    <string name="cocktail_deleting">Удаление коктейля</string>
+    <string name="recipe">Рецепт</string>
+    <string name="edit">Изменить</string>
 </resources>
