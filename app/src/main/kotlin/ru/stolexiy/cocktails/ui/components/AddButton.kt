@@ -18,10 +18,11 @@ import ru.stolexiy.cocktails.ui.theme.CocktailsTheme
 fun AddButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    contentPadding: PaddingValues = PaddingValues(30.dp),
 ) {
     Button(
         modifier = modifier,
-        contentPadding = PaddingValues(30.dp),
+        contentPadding = contentPadding,
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(containerColor = CocktailsTheme.colors.button),
         onClick = onClick

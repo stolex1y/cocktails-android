@@ -1,4 +1,4 @@
-package ru.stolexiy.cocktails.ui.cocktail.details.model
+package ru.stolexiy.cocktails.ui.cocktails.model
 
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
@@ -7,20 +7,14 @@ import ru.stolexiy.cocktails.domain.model.DomainCocktail
 
 @Parcelize
 @Immutable
-data class CocktailDetails(
+data class Cocktail(
     val id: Long,
     val title: String,
-    val description: String?,
-    val recipe: String?,
     val image: String?,
-    val ingredients: List<String>,
 ) : Parcelable
 
-fun DomainCocktail.toCocktailDetails() = CocktailDetails(
+fun DomainCocktail.toCocktail() = Cocktail(
     id = id,
     title = title,
-    description = description,
-    recipe = recipe,
     image = image,
-    ingredients = ingredients,
 )

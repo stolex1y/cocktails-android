@@ -55,7 +55,7 @@ class CocktailViewModel @Inject constructor(
         dispatchEvent(Event.Load)
     }
 
-    private fun addCocktail(cocktail: DomainCocktail) {
+    fun addCocktail(cocktail: DomainCocktail) {
         val workRequest = CocktailAddingWorker.createWorkRequest(cocktail)
         startWork(
             workRequest = workRequest,
@@ -63,7 +63,7 @@ class CocktailViewModel @Inject constructor(
         )
     }
 
-    private fun updateCocktail(cocktail: DomainCocktail) {
+    fun updateCocktail(cocktail: DomainCocktail) {
         val workRequest = CocktailUpdatingWorker.createWorkRequest(cocktail)
         startWork(
             workRequest = workRequest,
@@ -71,7 +71,7 @@ class CocktailViewModel @Inject constructor(
         )
     }
 
-    private fun deleteCocktail() {
+    fun deleteCocktail() {
         requireNotNull(cocktailId)
         val workRequest = CocktailDeletingWorker.createWorkRequest(cocktailId)
         startWork(

@@ -1,6 +1,7 @@
 package ru.stolexiy.cocktails.ui.components
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ru.stolexiy.cocktails.R
 import ru.stolexiy.cocktails.ui.theme.CocktailsTheme
 
@@ -35,9 +37,43 @@ fun TextButton(
 }
 
 @Composable
+fun TextButtonLight(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    @StringRes text: Int
+) {
+    Button(
+        border = BorderStroke(
+            width = 1.dp,
+            color = CocktailsTheme.colors.button
+        ),
+        modifier = modifier,
+        shape = MaterialTheme.shapes.extraLarge,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = CocktailsTheme.colors.background,
+            contentColor = CocktailsTheme.colors.button,
+        ),
+        onClick = onClick
+    ) {
+        Text(
+            text = stringResource(id = text),
+            style = MaterialTheme.typography.headlineSmall,
+        )
+    }
+}
+
+@Composable
 @Preview(showBackground = true)
 private fun TextButtonPreview() {
     CocktailsTheme {
         TextButton(onClick = {}, text = R.string.edit)
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun TextButtonLightPreview() {
+    CocktailsTheme {
+        TextButtonLight(onClick = {}, text = R.string.edit)
     }
 }
