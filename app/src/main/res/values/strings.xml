@@ -25,4 +25,7 @@
     <string name="add_ingredient">Добавить ингредиент</string>
     <string name="add">Добавить</string>
     <string name="ingredient">Ингредиент</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="do_you_wanna_delete">Вы уверены, что хотите удалить коктейль</string>
 </resources>

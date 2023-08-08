@@ -28,6 +28,8 @@ fun TextButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = CocktailsTheme.colors.button,
             contentColor = CocktailsTheme.colors.lightText,
+            disabledContainerColor = CocktailsTheme.colors.lightDarkText,
+            disabledContentColor = CocktailsTheme.colors.lightText,
         ),
         onClick = onClick
     ) {
@@ -42,18 +44,24 @@ fun TextButton(
 fun TextButtonLight(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    @StringRes text: Int
+    @StringRes text: Int,
+    enabled: Boolean = true
 ) {
     Button(
+        enabled = enabled,
         border = BorderStroke(
             width = 1.dp,
-            color = CocktailsTheme.colors.button
+            color = if (enabled)
+                CocktailsTheme.colors.button
+            else
+                CocktailsTheme.colors.darkText
         ),
         modifier = modifier,
         shape = MaterialTheme.shapes.extraLarge,
         colors = ButtonDefaults.buttonColors(
             containerColor = CocktailsTheme.colors.background,
             contentColor = CocktailsTheme.colors.button,
+            disabledContentColor = CocktailsTheme.colors.lightDarkText
         ),
         onClick = onClick
     ) {
@@ -68,7 +76,7 @@ fun TextButtonLight(
 @Preview(showBackground = true)
 private fun TextButtonPreview() {
     CocktailsTheme {
-        TextButton(onClick = {}, text = R.string.edit)
+        TextButton(enabled = false, onClick = {}, text = R.string.edit)
     }
 }
 
@@ -76,6 +84,6 @@ private fun TextButtonPreview() {
 @Preview(showBackground = true)
 private fun TextButtonLightPreview() {
     CocktailsTheme {
-        TextButtonLight(onClick = {}, text = R.string.edit)
+        TextButtonLight(enabled = false, onClick = {}, text = R.string.edit)
     }
 }

@@ -82,7 +82,7 @@ private fun CocktailsScreen(
 
     reloadData(viewModel)
 
-    if (cocktails.isEmpty())
+    if (cocktails.isEmpty() && screenState == CocktailsViewModel.State.Loaded)
         EmptyContent(onAddCocktail = onNavigateToAddCocktailDialog)
     else
         CocktailsList(

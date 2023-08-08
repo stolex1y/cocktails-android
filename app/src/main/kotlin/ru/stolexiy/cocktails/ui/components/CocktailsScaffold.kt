@@ -1,7 +1,9 @@
 package ru.stolexiy.cocktails.ui.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -16,6 +18,7 @@ fun CocktailsScaffold(
     content: @Composable () -> Unit,
 ) {
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         backgroundColor = CocktailsTheme.colors.background,
         isFloatingActionButtonDocked = true,
         floatingActionButtonPosition = FabPosition.Center,

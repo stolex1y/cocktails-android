@@ -1,6 +1,5 @@
 package ru.stolexiy.cocktails.ui.components
 
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
@@ -23,7 +22,6 @@ fun CocktailsBottomBar(
     )
     BottomAppBar(
         modifier = modifier
-            .defaultMinSize(minHeight = 60.dp)
             .navigationBarsPadding()
             .shadow(
                 elevation = 16.dp,

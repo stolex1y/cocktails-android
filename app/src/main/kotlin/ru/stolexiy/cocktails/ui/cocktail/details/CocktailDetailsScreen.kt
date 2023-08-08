@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,8 +48,11 @@ import ru.stolexiy.cocktails.R
 import ru.stolexiy.cocktails.ui.cocktail.CocktailViewModel
 import ru.stolexiy.cocktails.ui.cocktail.details.model.CocktailDetails
 import ru.stolexiy.cocktails.ui.cocktail.details.model.toCocktailDetails
+import ru.stolexiy.cocktails.ui.components.CocktailDialog
+import ru.stolexiy.cocktails.ui.components.DialogState
 import ru.stolexiy.cocktails.ui.components.Placeholder
 import ru.stolexiy.cocktails.ui.components.TextButton
+import ru.stolexiy.cocktails.ui.components.TextButtonLight
 import ru.stolexiy.cocktails.ui.theme.CocktailsTheme
 
 fun NavGraphBuilder.addCocktailDetailsScreen(
@@ -64,7 +68,8 @@ fun NavGraphBuilder.addCocktailDetailsScreen(
             CocktailDetailsDestination.COCKTAIL_ID_ARG
         )
         CocktailDetailsScreen(
-            onEditCocktail = { onNavigateToEditDialog(cocktailId) }
+            onEditCocktail = { onNavigateToEditDialog(cocktailId) },
+            onDeleteCocktail = { }
         )
     }
 }
@@ -77,9 +82,11 @@ object CocktailDetailsDestination {
 @Composable
 private fun CocktailDetailsScreen(
     onEditCocktail: () -> Unit,
+    onDeleteCocktail: () -> Unit,
     viewModel: CocktailViewModel = hiltViewModel()
 ) {
     val cocktail: CocktailDetails? by viewModel.cocktailDetailsAsState()
+    val deletingDialogState = DialogState.rememberDialogState()
 
     reloadData(viewModel)
 
@@ -91,6 +98,13 @@ private fun CocktailDetailsScreen(
             )
         }
     }
+    SubmitDeletingDialog(
+        dialogState = deletingDialogState,
+        cocktailTitle = cocktail?.title ?: "",
+        onSubmit = {
+            viewModel.deleteCocktail()
+        }
+    )
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -241,6 +255,53 @@ private fun CocktailRecipe(recipe: String) {
 }
 
 @Composable
+private fun SubmitDeletingDialog(
+    cocktailTitle: String,
+    dialogState: DialogState,
+    onSubmit: () -> Unit,
+) {
+    CocktailDialog(
+        modifier = Modifier
+            .fillMaxWidth(),
+        dialogState = dialogState
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.do_you_wanna_delete) + " \"$cocktailTitle\"?",
+                style = MaterialTheme.typography.headlineLarge
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                TextButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        onSubmit()
+                        dialogState.close()
+                    },
+                    text = R.string.yes
+                )
+                TextButtonLight(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        dialogState.close()
+                    },
+                    text = R.string.no
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun CocktailViewModel.cocktailDetailsAsState(): State<CocktailDetails?> =
     produceState<CocktailDetails?>(
         initialValue = null
@@ -273,6 +334,18 @@ private fun CocktailDetailsPreview() {
                 onEditCocktail = {}
             )
         }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun SubmitDeleteDialogPreview() {
+    CocktailsTheme {
+        SubmitDeletingDialog(
+            dialogState = DialogState.rememberDialogState().apply { open() },
+            onSubmit = {},
+            cocktailTitle = "Cocktail"
+        )
     }
 }
 

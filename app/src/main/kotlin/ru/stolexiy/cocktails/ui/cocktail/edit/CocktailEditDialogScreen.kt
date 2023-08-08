@@ -77,7 +77,7 @@ fun NavGraphBuilder.addCocktailEditScreen(
 
 object CocktailEditDialogDestination {
     val PATH = "cocktail/edit"
-    val COCKTAIL_ID_ARG = "cocktailId"
+    val COCKTAIL_ID_ARG = CocktailViewModel.COCKTAIL_ID_ARG
 }
 
 @Composable
@@ -91,8 +91,13 @@ fun EditCocktailDialogScreen(
     reloadData(viewModel)
 
     EditCocktailForm(
-        editingCocktail = editingCocktail,
+        editingCocktail = editingCocktail ?: rememberSaveable(
+            saver = Cocktail.saver
+        ) {
+            Cocktail()
+        },
         onSaveCocktail = {
+            onCancelEditing()
             val cocktail = it.toDomain()
             if (editingCocktailId != null)
                 viewModel.updateCocktail(cocktail)
@@ -105,17 +110,12 @@ fun EditCocktailDialogScreen(
 
 @Composable
 fun EditCocktailForm(
-    editingCocktail: Cocktail? = null,
+    editingCocktail: Cocktail,
     onSaveCocktail: (Cocktail) -> Unit,
     onCancel: () -> Unit,
 ) {
-    val cocktail = rememberSaveable(
-        saver = Cocktail.saver
-    ) {
-        editingCocktail ?: Cocktail()
-    }
     val addIngredientDialogState = DialogState.rememberDialogState()
-    val cocktailValidity by cocktail.isValidAsState
+    val cocktailValidity by editingCocktail.isValidAsState
     Column(
         modifier = Modifier
             .background(CocktailsTheme.colors.background)
@@ -127,7 +127,7 @@ fun EditCocktailForm(
             )
             .verticalScroll(rememberScrollState())
     ) {
-        val image: String? by cocktail.image.asState
+        val image: String? by editingCocktail.image.asState
         CocktailImage(
             modifier = Modifier
                 .padding(horizontal = 72.dp)
@@ -141,14 +141,14 @@ fun EditCocktailForm(
         ) {
             CocktailsOutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                validatedProperty = cocktail.title,
+                validatedProperty = editingCocktail.title,
                 singleLine = true,
                 label = R.string.title,
                 required = true
             )
             CocktailsOutlinedTextFieldNullable(
                 modifier = Modifier.fillMaxWidth(),
-                validatedProperty = cocktail.description,
+                validatedProperty = editingCocktail.description,
                 singleLine = false,
                 label = R.string.description,
                 required = false,
@@ -156,13 +156,13 @@ fun EditCocktailForm(
                 shape = MaterialTheme.shapes.medium
             )
             CocktailIngredients(
-                onRemoveIngredient = { cocktail.removeIngredient(it) },
-                ingredientsProperty = cocktail.ingredients,
+                onRemoveIngredient = { editingCocktail.removeIngredient(it) },
+                ingredientsProperty = editingCocktail.ingredients,
                 onAddIngredient = { addIngredientDialogState.open() }
             )
             CocktailsOutlinedTextFieldNullable(
                 modifier = Modifier.fillMaxWidth(),
-                validatedProperty = cocktail.recipe,
+                validatedProperty = editingCocktail.recipe,
                 singleLine = false,
                 label = R.string.recipe,
                 required = false,
@@ -177,8 +177,8 @@ fun EditCocktailForm(
             TextButton(
                 enabled = cocktailValidity,
                 onClick = {
-                    if (cocktail.isValid)
-                        onSaveCocktail(cocktail)
+                    if (editingCocktail.isValid)
+                        onSaveCocktail(editingCocktail)
                 },
                 text = R.string.save,
                 modifier = Modifier.fillMaxWidth()
@@ -193,7 +193,7 @@ fun EditCocktailForm(
     AddIngredientDialog(
         dialogState = addIngredientDialogState,
         onAdd = {
-            cocktail.addIngredient(it)
+            editingCocktail.addIngredient(it)
         }
     )
 }
@@ -369,7 +369,7 @@ private fun EditCocktailFormPreview() {
 private fun AddCocktailFormPreview() {
     CocktailsTheme {
         EditCocktailForm(
-            editingCocktail = null,
+            editingCocktail = Cocktail(),
             onSaveCocktail = {},
             onCancel = {}
         )
