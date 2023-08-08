@@ -10,6 +10,8 @@ data class CocktailsColors(
     val lightDarkText: Color,
     val errorText: Color,
     val bottomBar: Color,
+    val shadow: Color,
+    val background: Color,
 )
 
 private val theme_light_button = Color(0xFF4B97FF)
@@ -18,6 +20,8 @@ private val theme_light_light_text = Color(0xFFFFFFFF)
 private val theme_light_light_dark_text = Color(0xFF79747E)
 private val theme_light_error_text = Color(0xFFFF0000)
 private val theme_light_bottom_bar = Color(0xFFF6F8F9)
+private val theme_light_shadow = Color(0x2E5F2525)
+private val theme_light_background = Color(0xFFFFFFFF)
 
 val LocalCocktailsColors = staticCompositionLocalOf {
     CocktailsColors(
@@ -27,6 +31,8 @@ val LocalCocktailsColors = staticCompositionLocalOf {
         lightDarkText = Color.Unspecified,
         errorText = Color.Unspecified,
         bottomBar = Color.Unspecified,
+        shadow = Color.Unspecified,
+        background = Color.Unspecified,
     )
 }
 
@@ -37,4 +43,6 @@ val CocktailsLightColorScheme = CocktailsColors(
     lightDarkText = theme_light_light_dark_text,
     errorText = theme_light_error_text,
     bottomBar = theme_light_bottom_bar,
+    shadow = theme_light_shadow,
+    background = theme_light_background,
 )

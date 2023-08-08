@@ -37,3 +37,9 @@ fun CocktailsTheme(
         )
     }
 }
+
+object CocktailsTheme {
+    val colors: CocktailsColors
+        @Composable
+        get() = LocalCocktailsColors.current
+}
