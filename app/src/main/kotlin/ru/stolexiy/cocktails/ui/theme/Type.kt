@@ -12,14 +12,6 @@ private val DidactGothic = FontFamily(
     Font(R.font.didactgothic_regular, FontWeight.Normal),
 )
 
-// 36
-// 32
-// 24
-// 14
-// 12 - light
-// 16 - light
-// 18
-
 val CocktailsTypography = Typography(
     displayLarge = TextStyle(
         fontFamily = DidactGothic,
