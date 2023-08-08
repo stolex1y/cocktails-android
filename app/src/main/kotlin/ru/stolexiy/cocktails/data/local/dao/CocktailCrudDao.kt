@@ -1,5 +1,6 @@
 package ru.stolexiy.cocktails.data.local.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
@@ -12,6 +13,7 @@ private const val GET_ALL = "SELECT * FROM ${Tables.Cocktails.NAME}"
 private const val GET = "$GET_ALL WHERE ${Tables.Cocktails.Fields.ID} = :id"
 private const val DELETE_ALL = "DELETE FROM ${Tables.Cocktails.NAME}"
 
+@Dao
 internal abstract class CocktailCrudDao {
     @Insert
     abstract suspend fun insert(vararg entities: CocktailEntity): List<Long>
