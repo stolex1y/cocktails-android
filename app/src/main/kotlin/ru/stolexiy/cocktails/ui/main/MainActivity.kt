@@ -46,7 +46,6 @@ private fun NavGraphBuilder.navGraph(
         onNavigateUp = navController::navigateUp
     )
     addCocktailDetailsScreen(
-        onNavigateUp = navController::navigateUp,
         onNavigateToEditDialog = navController::navigateToEditCocktail
     )
 }

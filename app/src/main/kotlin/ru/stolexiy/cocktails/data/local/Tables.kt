@@ -10,6 +10,7 @@ internal object Tables {
             const val DESCRIPTION = "cocktail_description"
             const val RECIPE = "cocktail_recipe"
             const val IMAGE = "cocktail_image"
+            const val INGREDIENTS = "cocktail_ingredients"
         }
     }
 }

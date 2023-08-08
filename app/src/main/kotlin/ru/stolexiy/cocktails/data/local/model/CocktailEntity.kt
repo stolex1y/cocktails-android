@@ -15,6 +15,7 @@ data class CocktailEntity(
     @ColumnInfo(name = Tables.Cocktails.Fields.DESCRIPTION) val description: String?,
     @ColumnInfo(name = Tables.Cocktails.Fields.RECIPE) val recipe: String?,
     @ColumnInfo(name = Tables.Cocktails.Fields.IMAGE) val image: String?,
+    @ColumnInfo(name = Tables.Cocktails.Fields.INGREDIENTS) val ingredients: Ingredients,
 ) {
     fun toDomain() = DomainCocktail(
         id = id,
@@ -22,6 +23,7 @@ data class CocktailEntity(
         description = description,
         recipe = recipe,
         image = image,
+        ingredients = ingredients.values
     )
 }
 
@@ -31,4 +33,5 @@ fun DomainCocktail.toEntity() = CocktailEntity(
     description = description,
     recipe = recipe,
     image = image,
+    ingredients = Ingredients.fromStrings(ingredients)
 )

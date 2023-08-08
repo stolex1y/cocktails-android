@@ -6,4 +6,5 @@ data class DomainCocktail(
     val description: String?,
     val recipe: String?,
     val image: String?,
+    val ingredients: List<String>,
 )

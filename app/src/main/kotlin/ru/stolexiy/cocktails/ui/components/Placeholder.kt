@@ -8,6 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -20,10 +21,11 @@ import ru.stolexiy.cocktails.ui.theme.CocktailsTheme
 fun Placeholder(
     modifier: Modifier = Modifier,
     @StringRes contentDescription: Int,
+    shape: Shape = MaterialTheme.shapes.large
 ) {
     Surface(
         modifier = modifier
-            .clip(MaterialTheme.shapes.large),
+            .clip(shape),
         color = CocktailsTheme.colors.placeholderBackground,
         contentColor = CocktailsTheme.colors.fieldLabel,
     ) {

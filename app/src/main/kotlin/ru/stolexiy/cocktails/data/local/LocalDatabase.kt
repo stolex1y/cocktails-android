@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import ru.stolexiy.cocktails.data.local.dao.CocktailCrudDao
 import ru.stolexiy.cocktails.data.local.model.CocktailEntity
 
@@ -14,6 +15,7 @@ import ru.stolexiy.cocktails.data.local.model.CocktailEntity
     version = 1,
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 internal abstract class LocalDatabase : RoomDatabase() {
     abstract fun cocktailCrudDao(): CocktailCrudDao
 

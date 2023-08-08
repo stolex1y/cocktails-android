@@ -26,4 +26,17 @@ object FlowExtensions {
     fun <T1, T2> Flow<Result<List<T1>>>.mapLatestResultList(transform: suspend T1.() -> T2): Flow<Result<List<T2>>> {
         return mapLatestResult { list -> list.map { it.transform() } }
     }
+
+    fun <T> Flow<Result<T?>>.requireNotNullResult(
+        ifNullValue: Throwable = IllegalArgumentException()
+    ): Flow<Result<T>> {
+        return map {
+            if (it.isFailure)
+                Result.failure(it.exceptionOrNull()!!)
+            else if (it.getOrNull() == null)
+                Result.failure(ifNullValue)
+            else
+                Result.success(it.getOrNull()!!)
+        }
+    }
 }
