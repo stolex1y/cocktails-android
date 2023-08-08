@@ -40,7 +40,7 @@ class CocktailViewModel @Inject constructor(
     applicationScope = applicationScope,
     workManager = workManager
 ) {
-    private val cocktailId: Long? = savedStateHandle[COCKTAIL_ID_ARG]
+    private val cocktailId: Long? = savedStateHandle.get<Long?>(COCKTAIL_ID_ARG)?.takeIf { it > -1 }
 
     override fun dispatchEvent(event: Event) {
         when (event) {

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cocktail Bar</string>
+    <string name="add_cocktail">Add cocktail</string>
+    <string name="internal_error">An internal error has occurred…</string>
+    <string name="background_work">Background work</string>
+    <string name="cocktail_image">Cocktail image</string>
+    <string name="my_cocktails">My cocktails</string>
+    <string name="add_first_cocktail_hint">Add your first cocktail here</string>
+    <string name="arrow_down">Arrow down</string>
+    <string name="cocktail_adding">Cocktail adding</string>
+    <string name="cocktail_updating">Cocktail updating</string>
+    <string name="cocktail_deleting">Cocktail deleting</string>
+    <string name="recipe">Recipe</string>
+    <string name="edit">Edit</string>
+    <string name="required_field">Required field</string>
+    <string name="add_title">Add title</string>
+    <string name="add_ingredients">Add ingredients</string>
+    <string name="optional_field">Optional field</string>
+    <string name="title">Title</string>
+    <string name="description">Desctiption</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="remove_ingredient">Remove ingredient</string>
+    <string name="add_ingredient">Add ingredient</string>
+    <string name="add">Add</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="do_you_wanna_delete">Are you sure you want to delete the cocktail</string>
+    <string name="delete">Delete</string>
+</resources>

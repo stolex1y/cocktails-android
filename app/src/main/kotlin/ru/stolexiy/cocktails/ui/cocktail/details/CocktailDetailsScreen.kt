@@ -56,6 +56,7 @@ import ru.stolexiy.cocktails.ui.components.TextButtonLight
 import ru.stolexiy.cocktails.ui.theme.CocktailsTheme
 
 fun NavGraphBuilder.addCocktailDetailsScreen(
+    onNavigateUp: () -> Unit,
     onNavigateToEditDialog: (cocktailId: Long) -> Unit,
 ) {
     composable(
@@ -68,8 +69,8 @@ fun NavGraphBuilder.addCocktailDetailsScreen(
             CocktailDetailsDestination.COCKTAIL_ID_ARG
         )
         CocktailDetailsScreen(
+            onNavigateUp = onNavigateUp,
             onEditCocktail = { onNavigateToEditDialog(cocktailId) },
-            onDeleteCocktail = { }
         )
     }
 }
@@ -81,8 +82,8 @@ object CocktailDetailsDestination {
 
 @Composable
 private fun CocktailDetailsScreen(
+    onNavigateUp: () -> Unit,
     onEditCocktail: () -> Unit,
-    onDeleteCocktail: () -> Unit,
     viewModel: CocktailViewModel = hiltViewModel()
 ) {
     val cocktail: CocktailDetails? by viewModel.cocktailDetailsAsState()
@@ -94,7 +95,10 @@ private fun CocktailDetailsScreen(
         cocktail?.let {
             CocktailDetails(
                 onEditCocktail = onEditCocktail,
-                cocktail = it
+                cocktail = it,
+                onDeleteCocktail = {
+                    deletingDialogState.open()
+                }
             )
         }
     }
@@ -103,6 +107,7 @@ private fun CocktailDetailsScreen(
         cocktailTitle = cocktail?.title ?: "",
         onSubmit = {
             viewModel.deleteCocktail()
+            onNavigateUp()
         }
     )
 }
@@ -111,7 +116,8 @@ private fun CocktailDetailsScreen(
 @Composable
 private fun AnimatedVisibilityScope.CocktailDetails(
     onEditCocktail: () -> Unit,
-    cocktail: CocktailDetails
+    cocktail: CocktailDetails,
+    onDeleteCocktail: () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy((-17).dp)
@@ -143,7 +149,8 @@ private fun AnimatedVisibilityScope.CocktailDetails(
                     }
                 ),
             cocktail = cocktail,
-            onEditCocktail = onEditCocktail
+            onEditCocktail = onEditCocktail,
+            onDeleteCocktail = onDeleteCocktail
         )
     }
 }
@@ -165,6 +172,7 @@ private fun CocktailImage(
 @Composable
 private fun CocktailInfo(
     onEditCocktail: () -> Unit,
+    onDeleteCocktail: () -> Unit,
     modifier: Modifier = Modifier,
     cocktail: CocktailDetails
 ) {
@@ -215,6 +223,15 @@ private fun CocktailInfo(
                     .fillMaxWidth(),
                 onClick = onEditCocktail,
                 text = R.string.edit
+            )
+            Spacer(
+                modifier = Modifier.height(8.dp)
+            )
+            TextButtonLight(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onClick = onDeleteCocktail,
+                text = R.string.delete
             )
         }
     }
@@ -331,7 +348,8 @@ private fun CocktailDetailsPreview() {
         AnimatedVisibility(visibleState = state) {
             CocktailDetails(
                 cocktail = cocktailDetailsPreviewData(),
-                onEditCocktail = {}
+                onEditCocktail = {},
+                onDeleteCocktail = {}
             )
         }
     }
