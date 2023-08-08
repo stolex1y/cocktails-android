@@ -22,6 +22,9 @@ internal abstract class CocktailCrudDao {
     @Query(GET)
     abstract fun get(id: Long): Flow<CocktailEntity?>
 
+    @Query(GET)
+    abstract suspend fun getOnce(id: Long): CocktailEntity?
+
     @Update
     abstract suspend fun update(vararg entities: CocktailEntity)
 
